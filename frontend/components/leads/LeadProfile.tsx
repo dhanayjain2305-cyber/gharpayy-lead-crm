@@ -235,7 +235,7 @@ export function LeadProfile() {
             </div>
             
             <div className="space-y-4">
-              {lead.leadActivities.map((activity, index) => (
+              {lead.leadActivities.map((activity: any, index: number) => (
                 <div key={activity.id} className="flex space-x-3">
                   <div className="flex-shrink-0">
                     <div className="h-8 w-8 bg-accent-600 rounded-full flex items-center justify-center">
