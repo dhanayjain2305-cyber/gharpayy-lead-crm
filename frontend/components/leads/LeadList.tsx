@@ -253,7 +253,7 @@ export function LeadList() {
 
       {showStatusModal && selectedLead && (
         <LeadStatusModal
-          lead={selectedLead}
+          lead={selectedLead as any}
           onClose={() => {
             setShowStatusModal(false)
             setSelectedLead(null)
