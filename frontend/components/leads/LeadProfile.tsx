@@ -279,7 +279,7 @@ export function LeadProfile() {
           <div className="bg-card rounded-xl p-6">
             <h2 className="text-lg font-semibold text-text-primary mb-4">Visit History</h2>
             <div className="space-y-3">
-              {lead.visits.map((visit) => (
+              lead.visits.map((visit: any, index: number) => (
                 <div key={visit.id} className="p-3 bg-background rounded-lg border border-border">
                   <h4 className="font-medium text-text-primary">{visit.propertyName}</h4>
                   <p className="text-sm text-text-muted mb-2">
