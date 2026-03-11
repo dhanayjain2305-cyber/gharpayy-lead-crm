@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role     @default(AGENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  leads         Lead[]
+  visits        Visit[]
+  leadActivities LeadActivity[]
+
+  @@map("users")
+}
+
+model Lead {
+  id              String      @id @default(cuid())
+  name            String
+  phone           String
+  email           String?
+  source          LeadSource
+  status          LeadStatus  @default(NEW_LEAD)
+  assignedAgentId String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  assignedAgent   User?           @relation(fields: [assignedAgentId], references: [id])
+  visits          Visit[]
+  leadActivities  LeadActivity[]
+
+  @@map("leads")
+}
+
+model Visit {
+  id          String      @id @default(cuid())
+  leadId      String
+  agentId     String
+  propertyName String
+  visitDate   DateTime
+  visitTime   String
+  outcome     VisitOutcome?
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  lead  Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  agent User @relation(fields: [agentId], references: [id])
+
+  @@map("visits")
+}
+
+model LeadActivity {
+  id        String           @id @default(cuid())
+  leadId    String
+  agentId   String
+  type      ActivityType
+  notes     String?
+  createdAt DateTime         @default(now())
+
+  lead  Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  agent User @relation(fields: [agentId], references: [id])
+
+  @@map("lead_activities")
+}
+
+model Property {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  price       Decimal?
+  location    String?
+  type        String?
+  bedrooms    Int?
+  bathrooms   Int?
+  area        Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("properties")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  AGENT
+}
+
+enum LeadSource {
+  WEBSITE_FORM
+  WHATSAPP
+  TALLY_FORM
+  GOOGLE_FORM
+  PHONE_INQUIRY
+  SOCIAL_MEDIA
+  REFERRAL
+  OTHER
+}
+
+enum LeadStatus {
+  NEW_LEAD
+  CONTACTED
+  REQUIREMENT_COLLECTED
+  PROPERTY_SUGGESTED
+  VISIT_SCHEDULED
+  VISIT_COMPLETED
+  BOOKED
+  LOST
+}
+
+enum VisitOutcome {
+  VISITED
+  NO_SHOW
+  BOOKED
+  NOT_INTERESTED
+  RESCHEDULED
+}
+
+enum ActivityType {
+  CALL
+  EMAIL
+  VISIT
+  NOTE
+  STATUS_CHANGE
+  FOLLOW_UP
+}
