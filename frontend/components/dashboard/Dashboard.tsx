@@ -59,28 +59,28 @@ export function Dashboard() {
       value: overview.totalLeads,
       icon: Users,
       color: 'bg-blue-500',
-      trend: null,
+      trend: undefined,
     },
     {
       title: 'New Leads Today',
       value: overview.newLeadsToday,
       icon: UserPlus,
       color: 'bg-green-500',
-      trend: null,
+      trend: undefined,
     },
     {
       title: 'Visits Scheduled',
       value: overview.visitsScheduled,
       icon: Calendar,
       color: 'bg-yellow-500',
-      trend: null,
+      trend: undefined,
     },
     {
       title: 'Conversion Rate',
       value: `${overview.conversionRate}%`,
       icon: TrendingUp,
       color: 'bg-purple-500',
-      trend: null,
+      trend: undefined,
     },
   ]
 
